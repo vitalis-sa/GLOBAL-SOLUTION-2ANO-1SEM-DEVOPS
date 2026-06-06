@@ -1,6 +1,6 @@
 services:
   oracle-db:
-    image: gvenzl/oracle-xe:21-xe
+    image: gvenzl/oracle-xe:21-slim
     container_name: db-rm566234
     networks:
       - app-network
