@@ -37,7 +37,7 @@ services:
 
   app-dotnet:
     build: 
-      context: ../HyDrata
+      context: ../GLOBAL-SOLUTION-2ANO-1SEM-C-
       dockerfile: Dockerfile
     container_name: app-csharp-rm566234
     networks:
