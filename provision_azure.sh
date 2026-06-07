@@ -9,9 +9,9 @@ set -euo pipefail
 # -----------------------------
 # Variáveis de configuração
 # -----------------------------
-RESOURCE_GROUP="rg-global-solution-2ano-1sem"
+RESOURCE_GROUP="rg-global-solution-devops-2ano-1sem"
 LOCATION="canadacentral"
-VM_NAME="vm-global-solution-2ano-1sem"
+VM_NAME="vm-global-solution-devops-2ano-1sem"
 VM_SIZE="Standard_B2ls_v2"
 ADMIN_USER="azureuser"
 IMAGE="Ubuntu2204"
