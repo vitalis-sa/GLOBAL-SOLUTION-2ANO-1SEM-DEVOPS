@@ -58,7 +58,7 @@ NSG_NAME=$(basename "${NSG_ID}")
 # ----------------------------------------------------------
 # 4) Abertura EXCLUSIVA da porta 8080 (API)
 # ----------------------------------------------------------
-echo "[4/5] Criando regra de entrada APENAS para porta 8080 (API)..."
+echo "[4/5] Criando regra de entrada para porta 8080 (Java) e 5000 (.NET)..."
 az network nsg rule create \
   --resource-group "${RESOURCE_GROUP}" \
   --nsg-name "${NSG_NAME}" \
@@ -67,7 +67,7 @@ az network nsg rule create \
   --direction Inbound \
   --access Allow \
   --protocol Tcp \
-  --destination-port-ranges 8080
+  --destination-port-ranges 8080 5000
 
 # -----------------------------------------------------------------
 # 5) Instalação Blindada via Repositório Oficial do Docker

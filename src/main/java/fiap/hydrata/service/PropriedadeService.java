@@ -25,9 +25,17 @@ public class PropriedadeService {
     private final PropriedadeMapper mapper;
     private final ProdutorRepository produtorRepository;
     private final PlanoRepository planoRepository;
+    private final fiap.hydrata.repository.DispositivoIotRepository dispositivoIotRepository;
+    private final fiap.hydrata.repository.AlertaRepository alertaRepository;
+    private final fiap.hydrata.repository.LeituraClimaRepository leituraClimaRepository;
+    private final fiap.hydrata.repository.LeituraLuzRepository leituraLuzRepository;
 
     public List<PropriedadeResponse> findAll() {
         return mapper.toResponseList(repository.findAll());
+    }
+
+    public List<PropriedadeResponse> findByProdutorId(Long produtorId) {
+        return mapper.toResponseList(repository.findByProdutorId(produtorId));
     }
 
     public PropriedadeResponse findById(Long id) {
@@ -62,11 +70,18 @@ public class PropriedadeService {
 
     @Transactional
     public DeleteResponse delete(Long id) {
-        repository.findById(id)
-                .ifPresentOrElse(
-                        repository::delete,
-                        () -> { throw new ResourceNotFoundException("Propriedade não encontrada com id: " + id); }
-                );
+        Propriedade propriedade = repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Propriedade não encontrada com id: " + id));
+
+        alertaRepository.deleteByPropriedadeId(id);
+
+        dispositivoIotRepository.findByPropriedadeId(id).ifPresent(disp -> {
+            leituraClimaRepository.deleteByDispositivoIotId(disp.getId());
+            leituraLuzRepository.deleteByDispositivoIotId(disp.getId());
+            dispositivoIotRepository.delete(disp);
+        });
+
+        repository.delete(propriedade);
         return DeleteResponse.of("Propriedade", id);
     }
 }

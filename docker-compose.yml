@@ -12,7 +12,7 @@ services:
       - db_data:/opt/oracle/oradata
     restart: unless-stopped
     healthcheck:
-      test: ["CMD-SHELL", "echo 'SELECT 1 FROM DUAL;' | sqlplus -S system/$${ORACLE_PASSWORD}@localhost:1521/XEPDB1 > /dev/null || exit 1"]
+      test: [ "CMD-SHELL", "echo 'SELECT 1 FROM DUAL;' | sqlplus -S system/$${ORACLE_PASSWORD}@localhost:1521/XEPDB1 > /dev/null || exit 1" ]
       interval: 10s
       timeout: 10s
       retries: 5
@@ -34,6 +34,23 @@ services:
       DB_USER: ${DB_USER}
       DB_PASSWORD: ${ORACLE_PASSWORD}
       APP_ENV: production
+
+  app-dotnet:
+    build: 
+      context: ../HyDrata
+      dockerfile: Dockerfile
+    container_name: app-csharp-rm566234
+    networks:
+      - app-network
+    restart: unless-stopped
+    depends_on:
+      oracle-db:
+        condition: service_healthy
+    ports:
+      - "5000:5000"
+    environment:
+      ConnectionStrings__OracleConnection: "Data Source=oracle-db:1521/XEPDB1;User Id=system;Password=${ORACLE_PASSWORD:-oracle};"
+      ASPNETCORE_ENVIRONMENT: "Production"
 
 networks:
   app-network:
