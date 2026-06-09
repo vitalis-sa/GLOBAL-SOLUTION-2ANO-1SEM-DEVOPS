@@ -82,7 +82,7 @@ Contribui para a preservação dos recursos naturais através da utilização co
 
 Abaixo está o diagrama macro representando a infraestrutura do HyDrata:
 
-AAAAAAQUI
+<img width="1481" height="981" alt="Prototype VITALIS-temp" src="https://github.com/user-attachments/assets/b305d079-9091-41c0-8229-267bfbc7011d" />
 
 ---
 
