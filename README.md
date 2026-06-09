@@ -203,54 +203,125 @@ sudo docker logs -f app-csharp-rm566234
 Após a inicialização de todos os containers, acesse a documentação do Swagger pelo navegador (substitua `<IP_DA_VM>` pelo endereço IP público da sua máquina):
 
 * **Swagger Java API:** `http://<IP_DA_VM>:8080/swagger-ui/index.html`
-* **Swagger C# API:** `http://<IP_DA_VM>:5000/swagger-ui/index.html`
+* **Swagger C# API:** `http://<IP_DA_VM>:5000/swagger/index.html`
 
 
-# 🗺️ Rotas da API (Visão Geral)
+# 🗺️ Rotas da API (Documentação Completa)
 
-O sistema HyDrata possui endpoints REST distribuídos em duas APIs complementares (Java e C#). 
+O ecossistema HyDrata é composto por duas APIs complementares (C# e Java). Abaixo está a documentação detalhada de todos os endpoints expostos, refletindo exatamente as implementações dos *Controllers* de ambos os projetos.
 
-Abaixo está o mapeamento atualizado das rotas base disponíveis em cada serviço:
+---
 
 ## 🔷 API em C# (.NET Core)
-Focada no domínio core e em cadastros estruturais.
+Responsável pelo *Core Domain*, gerindo cadastros estruturais (Produtores, Cooperativas, Planos e suas relações).
 
 ### 🌱 Produtores — `/api/produtores`
 | Método | Endpoint                        | Descrição                 |
 | ------ | ------------------------------- | ------------------------- |
-| GET    | `/api/produtores`               | Listar todos              |
-| GET    | `/api/produtores/{id}`          | Buscar por ID             |
-| GET    | `/api/produtores/email/{email}` | Buscar por E-mail         |
-| POST   | `/api/produtores`               | Cadastrar novo produtor   |
-| PUT    | `/api/produtores/{id}`          | Atualizar dados           |
-| DELETE | `/api/produtores/{id}`          | Remover produtor          |
+| GET    | `/api/produtores`               | Listar todos os produtores |
+| GET    | `/api/produtores/{id}`          | Buscar produtor por ID |
+| GET    | `/api/produtores/{id}/propriedades` | Buscar produtor e suas propriedades vinculadas |
+| GET    | `/api/produtores/email/{email}` | Buscar produtor por e-mail |
+| POST   | `/api/produtores`               | Cadastrar novo produtor |
+| PUT    | `/api/produtores/{id}`          | Atualizar dados do produtor |
+| DELETE | `/api/produtores/{id}`          | Remover produtor |
 
-**Outras Rotas Base da API C#:**
-* **Propriedades:** `/api/propriedades` (Operações CRUD)
-* **Cooperativas:** `/api/cooperativas`
-* **Planos:** `/api/planos`
-* **Produtor-Cooperativa:** `/api/produtorcooperativa`
+### 🚜 Propriedades — `/api/propriedades`
+| Método | Endpoint                        | Descrição                 |
+| ------ | ------------------------------- | ------------------------- |
+| GET    | `/api/propriedades`             | Listar todas as propriedades (opcional: `?produtorId=`) |
+| GET    | `/api/propriedades/{id}`        | Buscar propriedade por ID |
+| POST   | `/api/propriedades`             | Cadastrar nova propriedade |
+| PUT    | `/api/propriedades/{id}`        | Atualizar dados da propriedade |
+| DELETE | `/api/propriedades/{id}`        | Remover propriedade |
+
+### 🤝 Cooperativas — `/api/cooperativas`
+| Método | Endpoint                        | Descrição                 |
+| ------ | ------------------------------- | ------------------------- |
+| GET    | `/api/cooperativas`             | Listar todas as cooperativas |
+| GET    | `/api/cooperativas/{id}`        | Buscar cooperativa por ID |
+| POST   | `/api/cooperativas`             | Cadastrar nova cooperativa |
+| PUT    | `/api/cooperativas/{id}`        | Atualizar cooperativa |
+| DELETE | `/api/cooperativas/{id}`        | Remover cooperativa |
+
+### 📋 Planos — `/api/planos`
+| Método | Endpoint                        | Descrição                 |
+| ------ | ------------------------------- | ------------------------- |
+| GET    | `/api/planos`                   | Listar todos os planos |
+| GET    | `/api/planos/{id}`              | Buscar plano por ID |
+| POST   | `/api/planos`                   | Cadastrar novo plano |
+| PUT    | `/api/planos/{id}`              | Atualizar plano |
+| DELETE | `/api/planos/{id}`              | Remover plano |
+
+### 🔗 Vínculo Produtor-Cooperativa — `/api/produtorcooperativa`
+| Método | Endpoint                        | Descrição                 |
+| ------ | ------------------------------- | ------------------------- |
+| GET    | `/api/produtorcooperativa`      | Listar todos os vínculos |
+| GET    | `/api/produtorcooperativa/produtor/{id}` | Buscar vínculos de um produtor específico |
+| GET    | `/api/produtorcooperativa/cooperativa/{id}` | Buscar vínculos de uma cooperativa |
+| POST   | `/api/produtorcooperativa`      | Associar produtor a uma cooperativa |
+| DELETE | `/api/produtorcooperativa/{produtorId}/{cooperativaId}` | Desassociar produtor de cooperativa |
 
 ---
 
 ## ☕ API em Java (Spring Boot)
-Focada em telemetria (IoT), dados climáticos, integrações governamentais e alertas.
+Responsável por telemetria, dados climáticos, dashboard, integrações e alertas automatizados.
+
+### 📊 Dashboard — `/api/dashboard`
+| Método | Endpoint                        | Descrição                 |
+| ------ | ------------------------------- | ------------------------- |
+| GET    | `/api/dashboard/{propriedadeId}`| Obter dados agregados e métricas para a tela inicial |
 
 ### 📡 Dispositivos IoT — `/api/dispositivos-iot`
-Endpoints para cadastro, configuração e gestão dos sensores instalados nas propriedades.
+| Método | Endpoint                        | Descrição                 |
+| ------ | ------------------------------- | ------------------------- |
+| GET    | `/api/dispositivos-iot`         | Listar todos os dispositivos IoT |
+| GET    | `/api/dispositivos-iot/{id}`    | Buscar dispositivo IoT por ID |
+| POST   | `/api/dispositivos-iot`         | Cadastrar novo dispositivo IoT |
+| PUT    | `/api/dispositivos-iot/{id}`    | Atualizar dispositivo IoT |
+| DELETE | `/api/dispositivos-iot/{id}`    | Remover dispositivo IoT |
 
-### 🌦️ Leituras — `/api/leituras`
-| Método | Endpoint                              | Descrição                           |
-| ------ | ------------------------------------- | ----------------------------------- |
-| GET    | `/api/leituras/historico/{id}`        | Histórico de clima da propriedade   |
+### 🌦️ Leituras Climáticas (Telemetria) — `/api/leituras`
+| Método | Endpoint                        | Descrição                 |
+| ------ | ------------------------------- | ------------------------- |
+| GET    | `/api/leituras/historico/{propriedadeId}` | Listar histórico de clima de uma propriedade (opcional: `?dias=`) |
 
 ### 🚨 Alertas — `/api/alertas`
-Endpoints para geração e consulta de alertas climáticos, hídricos e de queimadas.
+| Método | Endpoint                        | Descrição                 |
+| ------ | ------------------------------- | ------------------------- |
+| GET    | `/api/alertas`                  | Listar todos os alertas |
+| GET    | `/api/alertas/propriedade/{id}` | Listar alertas de uma propriedade (opcional: `?tipo=`) |
+| GET    | `/api/alertas/{id}`             | Buscar alerta por ID |
+| POST   | `/api/alertas`                  | Criar um novo alerta manualmente |
+| PUT    | `/api/alertas/{id}`             | Atualizar dados de um alerta |
+| DELETE | `/api/alertas/{id}`             | Remover alerta |
 
-**Outras Rotas Base da API Java:**
-* **Dashboard:** `/api/dashboard` (Resumo e métricas consolidadas)
-* **Fontes Externas:** `/api/fontes-externas` (Gerenciamento das APIs INPE/ANA)
-* **Dados Externos:** `/api/dados-externos` (Dados coletados de fontes governamentais)
-* **Propriedades:** `/api/propriedades` (Regras de negócio e telemetria integradas à propriedade)
+### 🌐 Fontes Externas — `/api/fontes-externas`
+| Método | Endpoint                        | Descrição                 |
+| ------ | ------------------------------- | ------------------------- |
+| GET    | `/api/fontes-externas`          | Listar todas as fontes (APIs governamentais, etc) |
+| GET    | `/api/fontes-externas/{id}`     | Buscar fonte por ID |
+| POST   | `/api/fontes-externas`          | Cadastrar nova fonte externa |
+| PUT    | `/api/fontes-externas/{id}`     | Atualizar fonte externa |
+| DELETE | `/api/fontes-externas/{id}`     | Remover fonte externa |
+
+### 📉 Dados Externos — `/api/dados-externos`
+| Método | Endpoint                        | Descrição                 |
+| ------ | ------------------------------- | ------------------------- |
+| GET    | `/api/dados-externos`           | Listar dados coletados de fontes externas |
+| GET    | `/api/dados-externos/{id}`      | Buscar dado externo por ID |
+| POST   | `/api/dados-externos`           | Registrar nova leitura de dado externo |
+| PUT    | `/api/dados-externos/{id}`      | Atualizar dado externo |
+| DELETE | `/api/dados-externos/{id}`      | Remover dado externo |
+
+### 🚜 Propriedades (Sincronização Java) — `/api/propriedades`
+| Método | Endpoint                        | Descrição                 |
+| ------ | ------------------------------- | ------------------------- |
+| GET    | `/api/propriedades`             | Listar todas as propriedades na API Java |
+| GET    | `/api/propriedades/produtor/{id}` | Listar propriedades de um produtor |
+| GET    | `/api/propriedades/{id}`        | Buscar propriedade por ID |
+| POST   | `/api/propriedades`             | Cadastrar espelho de propriedade no Java |
+| PUT    | `/api/propriedades/{id}`        | Atualizar espelho de propriedade |
+| DELETE | `/api/propriedades/{id}`        | Remover espelho de propriedade |
 
 ---
