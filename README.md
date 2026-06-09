@@ -1,97 +1,256 @@
-# 🐾 PetHub - Conteinerização (API Java)
+# HyDrata - Plataforma Inteligente de Monitoramento Hídrico 🌱💧
 
-O **PetHub** é uma API robusta desenvolvida em **Java (Spring Boot)** projetada para centralizar o ecossistema de clínicas veterinárias, tutores e pets. Este repositório foca em fornecer a base da API e foi inteiramente **conteinerizado** para atender aos rigorosos critérios acadêmicos da disciplina de DevOps.
+O **HyDrata** é uma solução desenvolvida em **Java (Spring Boot 3+)**, integrada a dispositivos IoT, Oracle Database XE, APIs governamentais e infraestrutura em nuvem, projetada para auxiliar pequenos e médios produtores rurais na tomada de decisões relacionadas à irrigação, monitoramento ambiental e prevenção de eventos climáticos extremos.
 
-A solução abrange o empacotamento da aplicação em um contêiner otimizado, sem privilégios de root, e sua integração a um Banco de Dados Oracle (21c), com persistência garantida através de volumes nomeados e comunicação viabilizada por uma rede bridge Docker exclusiva.
-
----
-
-## 🏗️ Arquitetura Macro
-
-> **[PLACEHOLDER PARA IMAGEM DA ARQUITETURA]**
-> *Insira aqui a imagem exportada do Draw.io ou Visual Paradigm demonstrando a Arquitetura Macro da solução na nuvem.*
+Este repositório foi **conteinerizado e estruturado** para atender aos requisitos da disciplina **DevOps Tools & Cloud Computing**, contemplando práticas modernas de desenvolvimento de software, banco de dados, computação em nuvem e DevOps.
 
 ---
 
-## 💻 Como Executar o Projeto (How-to)
+# 👥 Equipe e Links Importantes
 
-Siga o passo a passo sequencial abaixo para clonar, configurar e subir o ambiente na sua máquina local ou em sua máquina virtual na nuvem.
+|    RM    | Nome Completo                  |  Turma  |
+| :------: | :----------------------------- | :-----: |
+| RM561489 | Ana Flavia Camelo              | 2TDSPV  |
+| RM562745 | Gustavo Kenji Terada           | 2TDSPV  |
+| RM566234 | João Guilherme Carvalho Novaes | 2TDSPV  |
+| RM565154 | Pedro Chasci Puga              | 2TDSPV  |
+| RM561342 | Lucas Figueiredo Vieira        | 2TDSPV  |
 
-### 1. Clonar o Repositório
-
-```bash
-git clone https://github.com/vitalis-sa/hydrata-java.git
-cd hydrata-java
-```
-
-### 2. Configurar as Variáveis de Ambiente
-
-Crie o arquivo `.env` copiando o modelo de exemplo fornecido. Opcionalmente, você pode editar o `.env` gerado para alterar as senhas.
-
-```bash
-cp .env.example .env
-```
-
-### 3. Iniciar os Containers (Modo Background)
-
-Execute o comando abaixo para compilar o código fonte Java e iniciar os containers do App e do Banco de Dados conectados na mesma rede. É OBRIGATÓRIO o uso da flag `-d` para rodar em modo *background* (segundo plano).
-
-```bash
-docker compose up -d --build
-```
-
-### 4. Verificar os Logs
-
-Aguarde alguns minutos. O banco Oracle leva um tempinho para iniciar (existe um *healthcheck* configurado). Para acompanhar o processo e verificar os logs:
-
-```bash
-docker compose logs -f
-```
-*(Pressione `Ctrl+C` para sair do acompanhamento de logs)*
+* **Link para o Repositório GitHub:** https://github.com/vitalis-sa/GLOBAL-SOLUTION-2ANO-1SEM-DEVOPS
+* **Link para o Vídeo no YouTube:** https://youtu.be/pYZgpVd4p7M
 
 ---
 
-## 🛡️ Validações e Evidências da Avaliação
+# 📝 Descrição do Projeto
 
-Após a aplicação subir com sucesso, você precisará coletar as evidências conforme os requisitos da avaliação.
+O **HyDrata** é uma plataforma inteligente voltada para o monitoramento de recursos hídricos e ambientais em propriedades rurais.
 
-### Acessar e validar o Container do App (Usuário e Diretório)
+O sistema foi criado para solucionar um problema recorrente enfrentado por pequenos e médios produtores rurais: a dificuldade de acesso a informações confiáveis e acionáveis sobre irrigação, seca, enchentes e queimadas.
 
-Acesse o shell do container Java e execute os comandos exigidos para provar que a aplicação não roda como root, e que o diretório de trabalho está correto.
+Embora órgãos como a Agência Nacional de Águas (ANA) e o Instituto Nacional de Pesquisas Espaciais (INPE) disponibilizem dados públicos importantes, essas informações geralmente são técnicas e pouco acessíveis ao produtor rural.
 
-```bash
-# 1. Acessar o terminal do container do app
-docker exec -it app-java-rm566234 /bin/sh
+O HyDrata centraliza informações provenientes de múltiplas fontes:
 
-# 2. Exibir o usuário conectado (deve retornar 'springuser', NÃO PODE ser root)
-whoami
+* Sensores IoT instalados na propriedade rural;
+* Dados meteorológicos;
+* Dados hidrológicos;
+* Dados de queimadas;
 
-# 3. Exibir o diretório atual de trabalho (deve retornar '/app')
-pwd
+Através da análise dessas informações, o sistema gera recomendações e alertas inteligentes para auxiliar o produtor na tomada de decisão.
 
-# 4. Exibir a estrutura de diretórios e o proprietário dos arquivos
-ls -l
+Entre as principais funcionalidades estão:
 
-# 5. Sair do container
-exit
-```
-
-### Acessar o Container de Banco e Validar Persistência (SELECT)
-
-Demonstre que o banco subiu, que o usuário possui permissão, as tabelas foram criadas pelo Hibernate e valide a persistência fazendo um `SELECT`.
-
-```bash
-# 1. Acessar o utilitário sqlplus no container do banco (substitua a senha pela definida no .env)
-docker exec -it db-rm566234 sqlplus system/senha_forte_aqui@localhost:1521/XEPDB1
-
-# 2. Dentro do SQL*Plus, execute um SELECT em qualquer tabela do seu projeto. Exemplo:
-SELECT * FROM NOME_DA_TABELA;
-```
-
-**Nota sobre Persistência:** Os dados estarão a salvo! O `docker-compose.yml` foi configurado com o volume nomeado obrigatório `db_data:/opt/oracle/oradata`.
+* Monitoramento de propriedades rurais;
+* Gestão de produtores e cooperativas;
+* Monitoramento de sensores IoT;
+* Coleta de dados climáticos;
+* Coleta de dados de luminosidade;
+* Integração com fontes externas de dados;
+* Geração automática de alertas;
+* Recomendações de irrigação;
+* Identificação de riscos de seca;
+* Identificação de riscos de enchente;
+* Identificação de riscos de queimadas.
 
 ---
 
-## 👥 Equipe / Integrante RM
+# 🚀 Benefícios para o Negócio
 
-- **RM566234** - João Guilherme Carvalho Novaes
+## 💧 Uso Inteligente da Água
+
+Permite irrigar apenas quando necessário, reduzindo desperdícios e promovendo o uso sustentável dos recursos hídricos.
+
+## 🌾 Aumento da Produtividade
+
+Fornece informações confiáveis para apoiar decisões relacionadas ao manejo agrícola.
+
+## ⚠️ Prevenção de Eventos Climáticos
+
+Auxilia na antecipação de situações de risco através da geração de alertas preventivos.
+
+## 📈 Inclusão Tecnológica
+
+Democratiza o acesso a tecnologias normalmente restritas a grandes produtores rurais.
+
+## 🌎 Sustentabilidade Ambiental
+
+Contribui para a preservação dos recursos naturais através da utilização consciente da água.
+
+---
+
+# 🏗️ Arquitetura Macro da Solução (Nuvem)
+
+Abaixo está o diagrama macro representando a infraestrutura do HyDrata:
+
+AAAAAAQUI
+
+---
+
+# ⚙️ Tecnologias Utilizadas
+
+## Backend
+
+* Java 21
+* Spring Boot
+* Spring Data JPA
+* Hibernate
+* C# + .NET
+
+## Banco de Dados
+
+* Oracle SQL
+* Oracle PL/SQL
+
+## DevOps
+
+* Docker
+* Docker Compose
+
+## IoT
+
+* ESP32
+* MQTT
+* Sensor de Temperatura
+* Sensor de Umidade
+* Sensor de Luminosidade
+
+## APIs Externas
+
+* ANA (Agência Nacional de Águas)
+* INPE (Instituto Nacional de Pesquisas Espaciais)
+* Open-Meteo
+
+---
+
+# 📡 Arquitetura IoT
+
+O dispositivo ESP32 é responsável pela coleta de informações ambientais da propriedade rural.
+
+## Sensores
+
+* Sensor de Temperatura
+* Sensor de Umidade
+* Sensor de Luminosidade
+
+## Comunicação
+
+* Wi-Fi
+* MQTT
+
+
+# 💻 Instalação da Solução (How-To)
+
+Para provisionar a infraestrutura e rodar a aplicação, siga o passo a passo estruturado abaixo.
+
+### 1. Provisionamento da Infraestrutura na Azure
+Faça o upload do script `provision_azure.sh` para o seu terminal (por exemplo, usando o botão de *Upload/Download files* no Azure Cloud Shell) e execute-o:
+
+```bash
+# Conceda permissão de execução ao script
+chmod +x provision_azure.sh
+
+# Execute o script de provisionamento
+./provision_azure.sh
+```
+
+### 2. Acesso à Máquina Virtual
+Após o provisionamento, conecte-se à VM criada utilizando o comando SSH com as credenciais geradas:
+
+```bash
+ssh <usuario>@<IP_DA_VM>
+```
+
+### 3. Clonagem dos Repositórios
+Dentro da máquina virtual, clone os repositórios do projeto:
+
+```bash
+git clone https://github.com/vitalis-sa/GLOBAL-SOLUTION-2ANO-1SEM-DEVOPS
+git clone https://github.com/vitalis-sa/GLOBAL-SOLUTION-2ANO-1SEM-C-
+```
+
+### 4. Configuração do Ambiente
+Acesse o diretório do projeto e crie o arquivo de configuração `.env`:
+
+```bash
+cd GLOBAL-SOLUTION-2ANO-1SEM-DEVOPS
+
+cat << 'EOF' > .env
+# Configurações do Banco de Dados Oracle
+ORACLE_PASSWORD=oracle_secret_pass
+DB_URL=jdbc:oracle:thin:@db-rm566234:1521/XEPDB1
+DB_USER=system
+EOF
+```
+
+### 5. Inicialização dos Containers e Monitoramento
+Utilize o Docker Compose para fazer o build e iniciar os serviços. Em seguida, acompanhe os logs:
+
+```bash
+# Iniciar a infraestrutura (banco e APIs) em segundo plano
+sudo docker compose up -d --build
+
+# Acompanhar os logs do banco de dados (Pressione Ctrl+C para sair)
+sudo docker logs -f db-rm566234
+
+# Acompanhar os logs da API em Java
+sudo docker logs -f app-java-rm566234
+
+# Acompanhar os logs da API em C#
+sudo docker logs -f app-csharp-rm566234
+```
+
+### 6. Acesso à Documentação das APIs
+Após a inicialização de todos os containers, acesse a documentação do Swagger pelo navegador (substitua `<IP_DA_VM>` pelo endereço IP público da sua máquina):
+
+* **Swagger Java API:** `http://<IP_DA_VM>:8080/swagger-ui/index.html`
+* **Swagger C# API:** `http://<IP_DA_VM>:5000/swagger-ui/index.html`
+
+
+# 🗺️ Rotas da API (Visão Geral)
+
+O sistema HyDrata possui endpoints REST distribuídos em duas APIs complementares (Java e C#). 
+
+Abaixo está o mapeamento atualizado das rotas base disponíveis em cada serviço:
+
+## 🔷 API em C# (.NET Core)
+Focada no domínio core e em cadastros estruturais.
+
+### 🌱 Produtores — `/api/produtores`
+| Método | Endpoint                        | Descrição                 |
+| ------ | ------------------------------- | ------------------------- |
+| GET    | `/api/produtores`               | Listar todos              |
+| GET    | `/api/produtores/{id}`          | Buscar por ID             |
+| GET    | `/api/produtores/email/{email}` | Buscar por E-mail         |
+| POST   | `/api/produtores`               | Cadastrar novo produtor   |
+| PUT    | `/api/produtores/{id}`          | Atualizar dados           |
+| DELETE | `/api/produtores/{id}`          | Remover produtor          |
+
+**Outras Rotas Base da API C#:**
+* **Propriedades:** `/api/propriedades` (Operações CRUD)
+* **Cooperativas:** `/api/cooperativas`
+* **Planos:** `/api/planos`
+* **Produtor-Cooperativa:** `/api/produtorcooperativa`
+
+---
+
+## ☕ API em Java (Spring Boot)
+Focada em telemetria (IoT), dados climáticos, integrações governamentais e alertas.
+
+### 📡 Dispositivos IoT — `/api/dispositivos-iot`
+Endpoints para cadastro, configuração e gestão dos sensores instalados nas propriedades.
+
+### 🌦️ Leituras — `/api/leituras`
+| Método | Endpoint                              | Descrição                           |
+| ------ | ------------------------------------- | ----------------------------------- |
+| GET    | `/api/leituras/historico/{id}`        | Histórico de clima da propriedade   |
+
+### 🚨 Alertas — `/api/alertas`
+Endpoints para geração e consulta de alertas climáticos, hídricos e de queimadas.
+
+**Outras Rotas Base da API Java:**
+* **Dashboard:** `/api/dashboard` (Resumo e métricas consolidadas)
+* **Fontes Externas:** `/api/fontes-externas` (Gerenciamento das APIs INPE/ANA)
+* **Dados Externos:** `/api/dados-externos` (Dados coletados de fontes governamentais)
+* **Propriedades:** `/api/propriedades` (Regras de negócio e telemetria integradas à propriedade)
+
+---
